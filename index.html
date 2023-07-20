@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+      }
+      .box {
+        width: 40px;
+        height: 40px;
+        border: 1px solid black;
+        display: inline-block;
+        margin: 2px 3px;
+      }
+      .color {
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        cursor: pointer;
+        margin: 2px 3px;
+      }
+      #container {
+        width: 385px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        margin: 10px 0;
+        padding: 10px;
+        font-size: 16px;
+      }
+      #fillPalette {
+        margin-top: 10px;
+      }
+      #fillPalette .color {
+        border: 1px solid #686868;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="grid"></div>
+      <button id="addRow">Add Row</button>
+      <button id="removeRow">Remove Row</button>
+      <button id="clearGrid">Clear Grid</button>
+      <div id="fillPalette"></div>
+    </div>
+    <script>
+      var colors = [
+        "white",
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "violet",
+      ];
+      var selectedFillColor = "white";
+      var isMouseDown = false;
+
+      var grid = document.getElementById("grid");
+      for (var i = 0; i < 64; i++) {
+        var box = document.createElement("div");
+        box.className = "box";
+        box.style.backgroundColor = selectedFillColor;
+        box.addEventListener("mousedown", function () {
+          isMouseDown = true;
+          this.style.backgroundColor = selectedFillColor;
+        });
+        box.addEventListener("mouseover", function () {
+          if (isMouseDown) {
+            this.style.backgroundColor = selectedFillColor;
+          }
+        });
+        box.addEventListener("mouseup", function () {
+          isMouseDown = false;
+        });
+        grid.appendChild(box);
+      }
+
+      var fillPalette = document.getElementById("fillPalette");
+      for (var i = 0; i < colors.length; i++) {
+        var fillColorBox = document.createElement("div");
+        fillColorBox.className = "color";
+        fillColorBox.style.backgroundColor = colors[i];
+        fillColorBox.addEventListener("click", function () {
+          selectedFillColor = this.style.backgroundColor;
+        });
+        fillPalette.appendChild(fillColorBox);
+      }
+
+      document.getElementById("addRow").addEventListener("click", function () {
+        for (var i = 0; i < 8; i++) {
+          var box = document.createElement("div");
+          box.className = "box";
+          box.style.backgroundColor = selectedFillColor;
+          box.addEventListener("mousedown", function () {
+            isMouseDown = true;
+            this.style.backgroundColor = selectedFillColor;
+          });
+          box.addEventListener("mouseover", function () {
+            if (isMouseDown) {
+              this.style.backgroundColor = selectedFillColor;
+            }
+          });
+          box.addEventListener("mouseup", function () {
+            isMouseDown = false;
+          });
+          grid.appendChild(box);
+        }
+      });
+
+      document
+        .getElementById("removeRow")
+        .addEventListener("click", function () {
+          for (var i = 0; i < 8; i++) {
+            if (grid.lastChild) {
+              grid.removeChild(grid.lastChild);
+            }
+          }
+        });
+
+      document
+        .getElementById("clearGrid")
+        .addEventListener("click", function () {
+          var boxes = document.getElementsByClassName("box");
+          for (var i = 0; i < boxes.length; i++) {
+            boxes[i].style.backgroundColor = "white";
+          }
+        });
+
+      document.addEventListener("mouseup", function () {
+        isMouseDown = false;
+      });
+    </script>
+  </body>
+</html>
